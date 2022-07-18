@@ -1,8 +1,8 @@
 name: deploy
 on:
   push:
-  branches:
-    - docker
+    branches:
+      - docker
 env:
  LOGIN: ${{ secrets.DOCKER_LOGIN }}
  NAME: ${{ secrets.DOCKER_NAME }}
