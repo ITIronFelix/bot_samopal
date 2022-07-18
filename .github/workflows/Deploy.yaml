@@ -2,7 +2,7 @@ name: deploy
 on:
   push:
     branches:
-      - docker
+      - master
 env:
  LOGIN: ${{ secrets.DOCKER_LOGIN }}
  NAME: ${{ secrets.DOCKER_NAME }}
