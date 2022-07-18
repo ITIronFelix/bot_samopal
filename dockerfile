@@ -1,8 +1,7 @@
 FROM python:latest
-
-
-RUN mkdir -p /usr/src/app/
-WORKDIR /usr/src/app  
-COPY . /usr/src/app/ 
+COPY . ./app
+WORKDIR ./app
+CMD ["pwd"]  
 RUN pip install --no-cache-dir -r requirements.txt
-CMD ["python", "main"]
+CMD ["python", "main.py"]
+VOLUME /user_profiles
