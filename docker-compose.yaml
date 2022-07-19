@@ -3,5 +3,5 @@ services:
   bot:
     build: .
     restart: always
-    volumes: /user_profiles
-    
+    volumes:
+       - '/home/user_profiles/:/app/user_profiles'
