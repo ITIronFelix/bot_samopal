@@ -18,6 +18,5 @@ jobs:
       run: echo ${{ secrets.BOT_TOKEN }} >> configure.py
       run: docker-compose build -t $LOGIN/$NAME:${GITHUB_REF:11} .
       #run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
-      #
     - name: Push image to docker.io
       run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
