@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Login to docker.io
       run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
-    - uses: actions/checkout@mastery
+    - uses: actions/checkout@master
     - name: create configure
       run: echo ${{ secrets.BOT_TOKEN }} >> configure.py 
     - name: Build image
