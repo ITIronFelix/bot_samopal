@@ -2,4 +2,5 @@
 /user_profiles/*.py
 /user_profiles/*.db
 /handlers/__pycache__
+__pycache__
 venv
