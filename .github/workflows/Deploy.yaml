@@ -17,7 +17,18 @@ jobs:
     - name: create configure
       run: echo ${{ secrets.BOT_TOKEN }} >> configure.py 
     - name: Build image
-      run: docker compose build
-      #run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
+      #run: docker compose build
+      run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
     - name: Push image to docker.io
+      #run: docker compose push
       run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
+    - name: connect to server
+      run: |
+      'which ssh-agent || ( apt-get install -qq openssh-client )'
+      eval $(ssh-agent -s)
+      ssh-add <(echo "${{ secrets.SSH_KEY }}")
+      mkdir -p ~/.ssh
+      '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - name: connect2
+      run: ssh root@{{ secrets.HOST }} "docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PWD }}"
+      run: ssh root@{{ secrets.HOST }} "docker pull $LOGIN/$NAME:${GITHUB_REF:11}"
