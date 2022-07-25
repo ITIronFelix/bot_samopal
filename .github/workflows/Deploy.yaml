@@ -11,22 +11,28 @@ jobs:
   docker_push:
     runs-on: [ubuntu-latest]
     steps:
-    # - name: Login to docker.io
-    #   run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
-    # - uses: actions/checkout@master
-    # - name: create configure
-    #   run: echo ${{ secrets.BOT_TOKEN }} >> configure.py 
-    # - name: Build image
-    #   #run: docker compose build
-    #   run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
-    # - name: Push image to docker.io
-    #   #run: docker compose push
-    #   run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
-    - name: ls -a via ssh
+     - name: Login to docker.io
+       run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
+     - uses: actions/checkout@master
+     - name: create configure
+       run: |
+       echo ${{ secrets.BOT_TOKEN }} >> configure.py
+       echo ${{ secrets.ADMIN_ID }} >> configure.py  
+     - name: Build image
+       #run: docker compose build
+       run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
+     - name: Push image to docker.io
+       #run: docker compose push
+       run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
+  docker_pull:
+    runs-on: [ubuntu-latest]
+    needs: [docker-push]
+    steps:
+    - name: DEPLOY
       uses: fifsky/ssh-action@master
       with:
         command: |
-          ./start_bot.sh
+          docker pull $LOGIN/$NAME:${GITHUB_REF:11}
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}

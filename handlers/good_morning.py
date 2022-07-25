@@ -3,6 +3,7 @@ import datetime
 import sqlite3
 import os.path
 from os import path
+from configure import admin_id
 
 async def hello():
     dtn = datetime.datetime.now()
@@ -59,3 +60,6 @@ async def note_swap():
             cur.execute('DELETE FROM note_tomorrow')
             base.commit()
             base.close()
+
+async def start_bot():
+    await bot.send_message(admin_id, 'Это CI/CD ДЕТКА!!!')

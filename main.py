@@ -12,7 +12,7 @@ keyboard_ed.register_handlers_keyboard_ed(dp)
 
 
 
-from handlers.good_morning import hello, sing, note_swap
+from handlers.good_morning import hello, sing, note_swap, start_bot
 
 
 
@@ -28,6 +28,7 @@ async def scheduler():
 
 async def on_startup(_):
     asyncio.create_task(scheduler())
+    await start_bot()
 
 
 # '🕔'   '✅'   '❌'
