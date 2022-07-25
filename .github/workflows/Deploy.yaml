@@ -16,8 +16,8 @@ jobs:
      - uses: actions/checkout@master
      - name: create configure
        run: |
-       echo ${{ secrets.BOT_TOKEN }} >> configure.py
-       echo ${{ secrets.ADMIN_ID }} >> configure.py  
+       - echo ${{ secrets.BOT_TOKEN }} >> configure.py
+       - echo ${{ secrets.ADMIN_ID }} >> configure.py  
      - name: Build image
        #run: docker compose build
        run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
