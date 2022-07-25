@@ -32,8 +32,10 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          docker pull $LOGIN/$NAME:${GITHUB_REF:11}
+          echo '$LOGIN'
+          echo '${{ secrets.DOCKER_LOGIN }}'
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.PORT }}
+        #docker pull $LOGIN/$NAME:${GITHUB_REF:11}
