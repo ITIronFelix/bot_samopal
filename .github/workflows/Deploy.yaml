@@ -14,10 +14,10 @@ jobs:
      - name: Login to docker.io
        run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
      - uses: actions/checkout@master
-     - name: create configure
-       run: |
-       - echo ${{ secrets.BOT_TOKEN }} >> configure.py
-       - echo ${{ secrets.ADMIN_ID }} >> configure.py  
+     - name: create configure raz
+       run: echo ${{ secrets.BOT_TOKEN }} >> configure.py
+     - name: create configure dva
+       run: echo ${{ secrets.ADMIN_ID }} >> configure.py  
      - name: Build image
        #run: docker compose build
        run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
