@@ -26,10 +26,7 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          pwd
-          ll
-          cd /tmp
-          ls -a
+          ./start_bot.sh
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
