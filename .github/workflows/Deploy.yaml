@@ -35,6 +35,7 @@ jobs:
           docker pull ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:testik
           echo '$LOGIN'
           echo '${{ secrets.DOCKER_LOGIN }}'
+          docker run ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:testik
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
