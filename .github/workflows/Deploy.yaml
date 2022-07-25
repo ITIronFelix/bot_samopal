@@ -22,7 +22,7 @@ jobs:
        #run: docker compose build
        run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
      - name: Push image to docker.io
-       #run: docker compose push
+       #run: docker compose push#
        run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
   docker_pull:
     runs-on: [ubuntu-latest]
