@@ -2,7 +2,7 @@ name: deploy
 on:
   push:
     branches:
-      - master
+      - test
 env:
  LOGIN: ${{ secrets.DOCKER_LOGIN }}
  NAME: ${{ secrets.DOCKER_NAME }}
@@ -11,21 +11,23 @@ jobs:
   docker_push:
     runs-on: [ubuntu-latest]
     steps:
-    - name: Login to docker.io
-      run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
-    - uses: actions/checkout@master
-    - name: create configure
-      run: echo ${{ secrets.BOT_TOKEN }} >> configure.py 
-    - name: Build image
-      #run: docker compose build
-      run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
-    - name: Push image to docker.io
-      #run: docker compose push
-      run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
+    # - name: Login to docker.io
+    #   run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
+    # - uses: actions/checkout@master
+    # - name: create configure
+    #   run: echo ${{ secrets.BOT_TOKEN }} >> configure.py 
+    # - name: Build image
+    #   #run: docker compose build
+    #   run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f dockerfile .
+    # - name: Push image to docker.io
+    #   #run: docker compose push
+    #   run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
     - name: ls -a via ssh
       uses: fifsky/ssh-action@master
       with:
         command: |
+          pwd
+          ll
           cd /tmp
           ls -a
         host: ${{ secrets.HOST }}
