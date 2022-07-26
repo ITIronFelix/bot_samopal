@@ -19,7 +19,7 @@ from handlers.good_morning import hello, sing, note_swap, start_bot
 
 
 async def scheduler():
-    aioschedule.every().day.at("08:30").do(hello)
+    aioschedule.every().day.at("18:25").do(hello)
     aioschedule.every().day.at("00:24").do(note_swap)
     aioschedule.every().minute.do(sing)
     while True:
