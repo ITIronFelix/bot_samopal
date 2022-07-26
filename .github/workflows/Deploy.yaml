@@ -2,7 +2,7 @@ name: deploy
 on:
   push:
     branches:
-      - test
+      - master
 env:
  LOGIN: ${{ secrets.DOCKER_LOGIN }}
  NAME: ${{ secrets.DOCKER_NAME }}
@@ -35,7 +35,8 @@ jobs:
           docker pull ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:testik
           echo '$LOGIN'
           echo '${{ secrets.DOCKER_LOGIN }}'
-          docker run ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:testik
+          docker stop ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}
+          docker run ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:testik -v '/home/user_profiles/:/app/user_profiles' -d -e TZ = Europe/Moscow
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
