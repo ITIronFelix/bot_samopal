@@ -33,8 +33,8 @@ jobs:
       with:
         command: |
           docker pull ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}
-          docker stop ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}
-          docker run -v '/home/user_profiles/:/app/user_profiles' -d -e TZ = 'Europe/Moscow' ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }} -v '/home/user_profiles/:/app/user_profiles' -d -e TZ = 'Europe/Moscow'
+          docker stop ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
+          docker run -v '/home/user_profiles/:/app/user_profiles' -d -e TZ = 'Europe/Moscow' ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
