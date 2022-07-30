@@ -20,10 +20,10 @@ jobs:
        run: echo ${{ secrets.ADMIN_ID }} >> configure.py  
      - name: Build image
        #run: docker compose build
-       run: docker build -t $LOGIN/$NAME:testik -f dockerfile .
+       run: docker build -t $LOGIN/$NAME:{GITHUB_REF:11} -f dockerfile .
      - name: Push image to docker.io
        #run: docker compose push#
-       run: docker push $LOGIN/$NAME:testik
+       run: docker push $LOGIN/$NAME:{GITHUB_REF:11}
   docker_pull:
     runs-on: [ubuntu-latest]
     needs: [docker_push]
@@ -32,11 +32,9 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          docker pull ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:testik
-          echo '$LOGIN'
-          echo '${{ secrets.DOCKER_LOGIN }}'
-          docker stop ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}
-          docker run ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:testik -v '/home/user_profiles/:/app/user_profiles' -d -e TZ = Europe/Moscow
+          docker pull ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:${GITHUB_REF:11}
+          docker stop ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:${GITHUB_REF:11}
+          docker run -v '/home/user_profiles/:/app/user_profiles' -d -e TZ = 'Europe/Moscow' ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:testik -v '/home/user_profiles/:/app/user_profiles' -d -e TZ = 'Europe/Moscow'
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
