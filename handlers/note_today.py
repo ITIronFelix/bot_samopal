@@ -19,7 +19,7 @@ async def note_today_show(id):
             list.append(lst[i] + " " + lst[i + 1] + " " + lst[i+2])
             i += 3
         base.close()
-        await bot.send_message(id, 'Ваши задачи сегодня:' + "\n\n" + "\n".join(list))
+        await bot.send_message(id, 'Ваши задачи сегодня:' + "\n" + '🗒️=============================🗒️' +'\n' + "\n".join(list) + '\n' + '🗒️=============================🗒️')
     else:
         await bot.send_message(id, 'Список пуст')
 

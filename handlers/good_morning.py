@@ -4,6 +4,8 @@ import sqlite3
 import os.path
 from os import path
 from configure import admin_id
+import glob
+import os
 
 async def hello():
     dtn = datetime.datetime.now()
@@ -43,7 +45,7 @@ async def sing():
                 while i < len(lst):
                     sms.append(lst[i] + " " + lst[i + 1] + " " + lst[i + 2])
                     i += 3
-                await bot.send_message(chat, f'Напоминание! \n {sms[0]}')
+                await bot.send_message(chat, f'Напоминание! \n ⚠️=============================⚠️ \n {sms[0]} \n ⚠️=============================⚠️')
             base.close()
 
 
@@ -62,4 +64,9 @@ async def note_swap():
             base.close()
 
 async def start_bot():
-    await bot.send_message(admin_id, 'Это CI/CD ДЕТКА!!!')
+    path = sorted(os.listdir("updates_rewiew"))
+    latest_file = path[-1]
+    version = latest_file[:7]
+    date = latest_file[9:19]
+    mess = f'Бот запущен на версии: {version} от {date}'
+    await bot.send_message(admin_id, mess)
