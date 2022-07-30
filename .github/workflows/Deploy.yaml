@@ -32,9 +32,9 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          docker stop ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
+          docker stop $(docker ps -aq)
           docker pull ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
-          docker run -v '/home/user_profiles/:/app/user_profiles' -d -e TZ = 'Europe/Moscow' ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
+          docker run -v '/home/user_profiles/:/app/user_profiles' -d -e 'TZ = Europe/Moscow' ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
