@@ -51,5 +51,5 @@ async def siga(message : types.Message):
 
 
 def register_handlers_keyboard_ed(dp : Dispatcher):
-    dp.register_message_handler(keybord_sig_tasks_plans_change, commands=["Keyboard"])
+    dp.register_message_handler(keybord_sig_tasks_plans_change, commands=["keyboard"])
     dp.register_message_handler(siga, commands=['sig'])

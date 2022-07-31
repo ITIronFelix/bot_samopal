@@ -4,27 +4,17 @@ import sqlite3
 import os.path
 from os import path
 from configure import admin_id
-import glob
-import os
+from handlers import note_today
 
 async def hello():
-    dtn = datetime.datetime.now()
-    date = dtn.strftime("%d.%m.%Y")
-
-    path = 'user_profiles/847088740.db'
-    base = sqlite3.connect(path)
-    cur = base.cursor()
-    time = cur.execute('SELECT * FROM note_today ORDER BY time ASC').fetchall()
-    lst = [*(x for t in time for x in t)]
-    i = 0
-    list = []
-    while i < len(lst):
-        list.append(lst[i] + " " + lst[i + 1] + " " + lst[i + 2])
-        i += 3
-
-    base.close()
-    mess = "Доброе утро! Сегодня " + date + "\n" +'Ваши задачи сегодня:' + "\n\n" + "\n".join(list)
-    await bot.send_message(847088740, mess)
+    for filename in os.listdir("user_profiles"):
+        if path.splitext(filename)[1] == '.db':
+            dtn = datetime.datetime.now()
+            date = dtn.strftime("%d.%m.%Y")
+            chat = path.splitext(filename)[0]
+            mess = f"Доброе утро! Сегодня {date}"
+            await bot.send_message(chat, mess)
+            await note_today.note_today_show(chat)
 
 async def sing():
     for filename in os.listdir("user_profiles"):
@@ -64,7 +54,7 @@ async def note_swap():
             base.close()
 
 async def start_bot():
-    path = sorted(os.listdir("updates_rewiew"))
+    path = sorted(os.listdir("updates_review"))
     latest_file = path[-1]
     version = latest_file[:7]
     date = latest_file[9:19]

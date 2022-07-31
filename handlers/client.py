@@ -2,7 +2,16 @@ from aiogram import types, Dispatcher
 from create_bot import bot
 import sqlite3
 import os.path
+from os import path
 import datetime
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.state import State, StatesGroup
+import glob
+import os
+
+class FSM_updates_review(StatesGroup):
+    show_review = State()
 
 dtn = datetime.datetime.now()
 
@@ -90,7 +99,7 @@ async def otmena_sig(message : types.Message):
     base.close()
 
 
-# @dp.message_handler(commands=["start"])
+
 async def start(message: types.Message):
     path = 'user_profiles/' + str(message.from_user.id) + '.db'
     if os.path.isfile(path) == False:
@@ -150,14 +159,39 @@ async def show_statistics_sig(message: types.Message):
     await bot.send_message(message.chat.id, mess)
 
 
+async def qr_code(message: types.Message):
+    qr = open('media/photo/qr.png', 'rb')
+    mess = ('Ссылка и qr-code на данного бота:' + "\n" + 'https://t.me/poleznoandveselo_bot')
+    await bot.send_message(message.chat.id, mess) 
+    await bot.send_photo(message.chat.id, qr)
+
 async def echo_send(message : types.Message):
     if message.text == '🚬':
         await change_profile_sig_plus_one(message)
 
+async def show_updates_review(message: types.Message):
+    lst = os.listdir('updates_review/')
+    if len(lst):
+        keyboard_time = InlineKeyboardMarkup()
+        i = 0
+        while i < len(lst):
+            keyboard_time.add(InlineKeyboardButton(text=f'{lst[i]}', callback_data=f'{lst[i]}'))
+            i += 1
+        await bot.send_message(message.chat.id, 'Выберите версию', reply_markup=keyboard_time)
+    await FSM_updates_review.show_review.set()
 
+async def listener_updates_review(callback: types.CallbackQuery, state: FSMContext):
+    async with state.proxy() as data:
+            data["version"] = callback.data
+    async with state.proxy() as data:
+        with open(f'updates_review/{data["version"]}', 'r', encoding= 'UTF-8') as f:
+            mess= f.read()
+            await callback.message.answer(mess)
+    await state.finish()
 
+    
 async def test(message : types.Message):
-    await bot.send_message(message.chat.id, message.from_user.id)
+    await bot.send_message(message.chat.id, 'test')
 
 
 def register_handlers_client(dp : Dispatcher):
@@ -167,3 +201,6 @@ def register_handlers_client(dp : Dispatcher):
     dp.register_message_handler(otmena_sig, commands=['otmena_sig'])
     dp.register_message_handler(echo_send, text = '🚬')
     dp.register_message_handler(test, commands=['test'])
+    dp.register_message_handler(qr_code, commands=['qr_code'])
+    dp.register_message_handler(show_updates_review, commands=['updates_review'])
+    dp.register_callback_query_handler(listener_updates_review, state=FSM_updates_review.show_review)
